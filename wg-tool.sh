@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Wireguard Server/Client Script
-# Date last revised: 2023-03-13
+# Date last revised: 2023-03-17
 # Version 1.0
 #
 # This script can be used on select Asus AC series HND routers and AX Routers using AsusWRT Merlin firmware 386.4 and above
