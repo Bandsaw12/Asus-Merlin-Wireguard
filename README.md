@@ -10,6 +10,8 @@ The script can be placed in the /jffs drive in a convenient location.  I recomme
 
 curl --retry 3 https://raw.githubusercontent.com/Bandsaw12/Asus-Merlin-Wireguard/main/wg-tool.sh
 
+# Overview
+
 The script has all the functionality of the official wg-quick script written in bash with a couple of exceptions.  The script does not support the SaveConfig directive.  The directive is read, and processed in order to remain compatible with existing Wireguard config files, but the directive is not acted on.  Secondly, the script goes one step further and adds appropriate fire wall rules depending on if the config file is a server configuration or a client configuration.
 The script looks for a config file in the same directory in which the script is located.  If the script cannot find a config file there, it will look in the directory “/jffs/addons/wireguard”
 
