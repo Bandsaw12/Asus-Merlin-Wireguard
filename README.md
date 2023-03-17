@@ -8,7 +8,7 @@ The script can be placed in the /jffs drive in a convenient location.  I recomme
 
 # Installation
 
-curl --retry 3 https://raw.githubusercontent.com/Bandsaw12/Asus-Merlin-Wireguard/main/wg-tool.sh
+`curl --retry 3 https://raw.githubusercontent.com/Bandsaw12/Asus-Merlin-Wireguard/main/wg-tool.sh`
 
 # Overview
 
@@ -17,7 +17,7 @@ The script looks for a config file in the same directory in which the script is 
 
 # To use the script,
 
-    Wg-tool.sh [start | stop | restart] [interface_name] {show}
+`Wg-tool.sh [ start | stop | restart] [interface_name ] {show}`
 
 Where a configuration file named “{interface_name}.conf” exists either in the same directory as wg-tool.sh or in “/jffs/addons/wireguard”.
 The optional argument show can be added which will have the script print out key commands that are being carried out by the script.
@@ -26,8 +26,9 @@ The optional argument show can be added which will have the script print out key
 
 Since firewall and NAT restarts will clear any custom firewall rules, wg-tool.sh can be placed in both the firewall-start and nat-start scripts with the following options which will loop through all running wireguard interfaces and re-add the appropriate rules;
 
-    Wg-tool.sh firewall {show}		Placed in the firewall-start script
-    Wg-tool.sh nat {show}			Placed in the nat-start script
+`Wg-tool.sh firewall {show}`			Placed in the firewall-start script
+
+`Wg-tool.sh nat {show}`								Placed in the nat-start script
 
 # IPv6 handling
 
