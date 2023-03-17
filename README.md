@@ -17,7 +17,7 @@ The script looks for a config file in the same directory in which the script is 
 
 # To use the script,
 
-Wg-tool.sh [start | stop | restart] [interface_name] {show}
+    Wg-tool.sh [start | stop | restart] [interface_name] {show}
 
 Where a configuration file named “{interface_name}.conf” exists either in the same directory as wg-tool.sh or in “/jffs/addons/wireguard”.
 The optional argument show can be added which will have the script print out key commands that are being carried out by the script.
