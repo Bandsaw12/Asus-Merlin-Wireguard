@@ -11,8 +11,11 @@
 # Default all traffic routing is done as per https://www.wireguard.com/netns/ (Improved Rule Based Routing)
 # Some firwall rules are set up as per https://www.procustodibus.com/blog/2022/01/wg-quick-firewall-rules/
 #
-# Some origional content inspired by SNBForum User @Odkrys  - https://github.com/odkrys/entware-makefile-for-merlin/tree/main/wireguard-tools/files
-# and SNBForum user @JackYaz
+# Origional Wireguard scripts inspired by SNBForum User @Odkrys  - https://github.com/odkrys/entware-makefile-for-merlin/tree/main/wireguard-tools/files
+# Some code snipits inspired by SNBForum User @JackYaz
+# IP6Tables rules inspired by SNBForum User @Martineau Wireguard Service Manager
+#
+# Note that IPv6 have not been tested as I don't have IPv6.  Done the best I could to implament
 ############################################################################################################################
 
 #set -x # enable debugging.  Comment out when debugging is not needed
@@ -806,7 +809,7 @@ if ! [ "$#" -ge 1 ]; then
 fi
 
 Print_Output true "Script is starting"
-Clear_Lock  # Delete this line for production
+# Clear_Lock  # Uncomment this line for trouble shooting purposes
 Check_Lock
 Lock
 
