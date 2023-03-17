@@ -20,6 +20,7 @@
 
 #set -x # enable debugging.  Comment out when debugging is not needed
 
+
 source /usr/sbin/helper.sh
 
 TMPDIR="/tmp/wireguard"
