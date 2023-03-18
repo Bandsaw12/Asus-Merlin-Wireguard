@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Wireguard Server/Client Script
-# Date last revised: 2023-03-17
-# Version 1.0
+# Date last revised: 2023-03-18
+# Version 1.01
 #
 # This script can be used on select Asus AC series HND routers and AX Routers using AsusWRT Merlin firmware 386.4 and above
 # without having to use Entware or an external USB Hard drive.                                                   
@@ -593,8 +593,7 @@ Add_NAT_Rules() {
 				cmd ip6tables -t raw -A PREROUTING -d ${WGaddress} ! -i ${WGIF} -m addrtype ! --src-type LOCAL -j DROP
 			fi
 		done
-	fi
-	
+	fi	
 }
 
 Add_DNS_Iptables() {
@@ -914,6 +913,18 @@ case "${ACTION}" in
 			CheckWGIFargument ${i}
 			if Get_AddrPort; then
 				Delete_NAT_Rules
+				wg show ${i} allowed-ips | Get_IPv4_CIDR | sort -nr -k 2 -t / > /tmp/allowed-ips.txt
+				wg show ${i} allowed-ips | Get_IPv6 | sort -nr -k 2 -t / >> /tmp/allowed-ips.txt
+				POLICYDEFAULT="NO"
+				while read -r line
+				do
+					for i in ${line}
+					do
+						if [ -n "$(echo ${i} | grep '/0$')" ]; then
+							POLICYDEFAULT="YES"
+						fi
+					done
+				done < /tmp/allowed-ips.txt
 				Add_NAT_Rules
 			else	
 				Print_Output both "Error parsing config file for interface ${i}" $ERR
