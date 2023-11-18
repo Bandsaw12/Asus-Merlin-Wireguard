@@ -29,7 +29,7 @@ SCRIPTNAME="$(basename $0)"
 PROTO=""
 SET_DEFAULT="NO"
 LAN_CIDR=""
-LAN_ADDR=$(nvram get lan_ipaddr) 
+LAN_ADDR=$(nvram get lan_ipaddr)
 IPV6_SERVICE=$(nvram get ipv6_service)
 LAN_NETMASK=$(nvram get lan_netmask)
 
@@ -49,6 +49,10 @@ readonly CLEARFORMAT="\\e[0m"
 
 WAN_Name(){
 	echo $(nvram get wan0_ifname)  
+}
+
+LAN_Name(){
+	echo $(nvram get lan_ifname)  
 }
 
 Get_IPv4() {
@@ -533,9 +537,9 @@ Delete_NAT_Rules() {
 		ip6tables -t mangle -D POSTROUTING -p udp -m mark --mark 0xca6c -j CONNMARK --save-mark --nfmask 0xffffffff --ctmask 0xffffffff 2>/dev/null
 	
 		if [ "$WGMODE" != "client" ]; then
-			ip6tables -t nat -D POSTROUTING -s "$(Get_Network $WGaddress)" -o "$(WAN_Name)" -j MASQUERADE 2>/dev/null
+			ip6tables -t nat -D POSTROUTING -s "${WGaddress}" -o "${WAN_Name}" -j MASQUERADE 2>/dev/null
 		else	
-			ip6tables -t nat -D POSTROUTING -s "${LAN_SUBNET}" -o "$WGIF" -j MASQUERADE 2>/dev/null
+			ip6tables -t nat -D POSTROUTING ! -s "${WGaddress}" -o "${LAN_Name}" -j MASQUERADE 2>/dev/null
 		fi
 	fi
 }
@@ -562,8 +566,15 @@ Add_NAT_Rules() {
 	if [ "$WGMODE" != "client" ];then
 		cmd iptables -t nat -I POSTROUTING -s "$(Get_Network $WGaddress)" -o "$(WAN_Name)" -j MASQUERADE
 		cmd iptables -t nat -I PREROUTING -p udp --dport "$WGport" -j ACCEPT
+		if [ "${IPV6_SERVICE}" != "disabled" ]; then
+			cmd ip6tables -t nat -I POSTROUTING -s "$WGaddress" -o "${WAN_Name}" -j MASQUERADE
+			cmd ip6tables -t nat -I PREROUTING -p udp --dport "$WGport" -j ACCEPT
+		fi
 	else
 		cmd iptables -t nat -I POSTROUTING -s "${LAN_SUBNET}" -o "$WGIF" -j MASQUERADE
+		if [ "${IPV6_SERVICE}" != "disabled" ]; then
+			cmd ip6tables -t nat -I POSTROUTING ! -s "${WGaddress}" -o "${LAN_Name}" -j MASQUERADE
+		fi
 	fi
 	
 	[ -n "$DNS" ] && Add_DNS_Iptables
